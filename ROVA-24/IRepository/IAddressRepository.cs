@@ -5,15 +5,15 @@ namespace ROVA_24.IRepository
 {
     public interface IAddressRepository
     {
-        Task<Customers> GetCustomerByNameAndPhoneNumberAsync(string phoneNumber);
-        Task<ServiceResponse<Address>> AddaddressesAsync(Address address);
+        Task<Customers> getCustomerByNameAndPhoneNumberAsync(string phoneNumber);
+        Task<ServiceResponse<Address>> addAddressesAsync(Address address);
         Task<bool> checkCustomerExistsOrNotAsync(string name,string phoneNumber);
-        Task<List<Address>> GetAllAddressesFromDbAsync();
+        Task<List<Address>> getAllAddressesFromDbAsync();
         Task<Address> getAddressById(int addressId);
         Task<Address> getAddressByCustomerId(int customerId);
         Task<Address> getAddressByIdAndCustomerId(int addressId, int customerId);
         Task<ServiceResponse<Address>> updateCustomerAddressAsync(Address address);
-        Task<bool> DeleteUserByAddressIdAsync(int addressId);
+        Task<bool> deleteAddressByAddressIdAsync(int addressId);
 
 
     }

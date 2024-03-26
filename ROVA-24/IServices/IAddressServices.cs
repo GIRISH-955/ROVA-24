@@ -7,10 +7,10 @@ namespace ROVA_24.IServices
 {
     public interface IAddressServices
     {
-        Task<ServiceResponse<AddressResponseDTO>> AddAddressAsync(AddressRequestDTO addressRequestDTO);
-        Task<ServiceResponse<List<AddressDTO>>> GetAllAddressAsync();
-        Task<ServiceResponse<AddressDTO>> GetAddressesByIdAsync(int addressId);
-        Task<ServiceResponse<UpdateAddressDTO>> UpdateAddressesByIdAsync(int addressId,UpdateAddressDTO updateAddressDTO);
-        Task<ServiceResponse<string>> DeleteAddressByIdAsync(int addressId);
+        Task<ServiceResponse<AddressResponseDTO>> addAddressAsync(AddressRequestDTO addressRequestDTO);
+        Task<ServiceResponse<List<AddressDTO>>> getAllAddressAsync();
+        Task<ServiceResponse<AddressDTO>> getAddressesByIdAsync(int addressId);
+        Task<ServiceResponse<UpdateAddressDTO>> updateAddressesByIdAsync(int addressId,UpdateAddressDTO updateAddressDTO);
+        Task<ServiceResponse<string>> deleteAddressByIdAsync(int addressId);
     }
 }
