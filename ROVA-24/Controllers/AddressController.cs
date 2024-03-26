@@ -20,9 +20,9 @@ namespace ROVA_24.Controllers
         }
         [EnableCors("CORSPolicy")]
         [HttpPost("AddAddress")]
-        public async Task<IActionResult> addAddressAsync(AddressRequestDTO addressRequestDTO)
+        public async Task<IActionResult> addAddress(AddressRequestDTO addressRequestDTO)
         {
-            var result = await addressServices.AddAddressAsync(addressRequestDTO);
+            var result = await addressServices.addAddressAsync(addressRequestDTO);
             if (result.Success)
                 return Ok(result);
             if(result.Success && result.Message == "Customer does not exist")
@@ -33,9 +33,9 @@ namespace ROVA_24.Controllers
         
         [EnableCors("CORSPolicy")]
         [HttpGet("getAllAddresses")]
-        public async Task<IActionResult> GetAllAddressesAsync()
+        public async Task<IActionResult> getAllAddresses()
         {
-            var result = await addressServices.GetAllAddressAsync();
+            var result = await addressServices.getAllAddressAsync();
             if (result.Success)
                 return Ok(result);
             return BadRequest(result);
@@ -43,9 +43,9 @@ namespace ROVA_24.Controllers
 
         [EnableCors("CORSPolicy")]
         [HttpGet("getAddress{addressId}")]
-        public async Task<IActionResult> GetAddressByIdAsync(int addressId)
+        public async Task<IActionResult> getAddressById(int addressId)
         {
-            var result = await addressServices.GetAddressesByIdAsync(addressId);
+            var result = await addressServices.getAddressesByIdAsync(addressId);
             if (result.Success)
                 return Ok(result);
             if(result.Success&& result.Message == "Address not found")
@@ -54,9 +54,9 @@ namespace ROVA_24.Controllers
         }
         [EnableCors("CORSPolicy")]
         [HttpPut("{addressId}")]
-        public async Task<IActionResult> UpdateAddressByIdAsync(int addressId, [FromBody] UpdateAddressDTO updateAddressDTO)
+        public async Task<IActionResult> updateAddressById(int addressId, [FromBody] UpdateAddressDTO updateAddressDTO)
         {
-            var result = await addressServices.UpdateAddressesByIdAsync(addressId,updateAddressDTO);
+            var result = await addressServices.updateAddressesByIdAsync(addressId,updateAddressDTO);
             if (result.Success)
                 return Ok(result);
             if (result.Success && result.Message == "Customer does not exist")
@@ -67,9 +67,9 @@ namespace ROVA_24.Controllers
         }
         [EnableCors("CORSPolicy")]
         [HttpDelete("DeleteAddress")]
-        public async Task<IActionResult> DeleteAddressByIdAsync(int addressId)
+        public async Task<IActionResult> deleteAddressById(int addressId)
         {
-            var result = await addressServices.DeleteAddressByIdAsync(addressId);
+            var result = await addressServices.deleteAddressByIdAsync(addressId);
             if(result.Success)
                 return Ok(result);
             if (result.Success && result.Message == "Address Does not exist")

@@ -19,9 +19,9 @@ namespace ROVA_24.Services
             _addressRepository = addressRepository;
             _mapper = mapper;
         }
-        public async Task<ServiceResponse<AddressResponseDTO>> AddAddressAsync(AddressRequestDTO addressRequestDTO)
+        public async Task<ServiceResponse<AddressResponseDTO>> addAddressAsync(AddressRequestDTO addressRequestDTO)
         {
-            var existingCustomer =  await _addressRepository.GetCustomerByNameAndPhoneNumberAsync(addressRequestDTO.PhoneNumber);
+            var existingCustomer =  await _addressRepository.getCustomerByNameAndPhoneNumberAsync(addressRequestDTO.PhoneNumber);
             if(existingCustomer!=null) 
             {
                 var newAddress = new Address
@@ -37,7 +37,7 @@ namespace ROVA_24.Services
                     AlternatePhoneNumber = addressRequestDTO.AlternatePhoneNumber
 
                 };
-                await _addressRepository.AddaddressesAsync(newAddress);
+                await _addressRepository.addAddressesAsync(newAddress);
                 var addressResponseDTO = new AddressResponseDTO
                 {
                     AddressId = newAddress.AddressId,
@@ -67,13 +67,13 @@ namespace ROVA_24.Services
 
         }
 
-        public async Task<ServiceResponse<List<AddressDTO>>> GetAllAddressAsync()
+        public async Task<ServiceResponse<List<AddressDTO>>> getAllAddressAsync()
         {
             var response = new ServiceResponse<List<AddressDTO>>();
 
             try
             {
-                var addresses = await _addressRepository.GetAllAddressesFromDbAsync();
+                var addresses = await _addressRepository.getAllAddressesFromDbAsync();
 
                 if (addresses != null)
                 {
@@ -116,7 +116,7 @@ namespace ROVA_24.Services
             return response;
         }
 
-        public async Task<ServiceResponse<AddressDTO>> GetAddressesByIdAsync(int addressId)
+        public async Task<ServiceResponse<AddressDTO>> getAddressesByIdAsync(int addressId)
         {
             try
             {
@@ -161,7 +161,7 @@ namespace ROVA_24.Services
                 };
             }
         }
-        public async Task<ServiceResponse<UpdateAddressDTO>> UpdateAddressesByIdAsync(int addressId, UpdateAddressDTO updateAddressDTO)
+        public async Task<ServiceResponse<UpdateAddressDTO>> updateAddressesByIdAsync(int addressId, UpdateAddressDTO updateAddressDTO)
         {
             var existingCustomer = await _addressRepository.getAddressByCustomerId(updateAddressDTO.CustomerId);
             if (existingCustomer == null)
@@ -208,12 +208,12 @@ namespace ROVA_24.Services
             };
 
         }
-        public async Task<ServiceResponse<string>> DeleteAddressByIdAsync(int addressId)
+        public async Task<ServiceResponse<string>> deleteAddressByIdAsync(int addressId)
         {
             var existingAddress = await _addressRepository.getAddressById(addressId);
             if (existingAddress != null)
             {
-                var deletionResult = await _addressRepository.DeleteUserByAddressIdAsync(addressId);
+                var deletionResult = await _addressRepository.deleteAddressByAddressIdAsync(addressId);
                 if (deletionResult)
                 {
                     return new ServiceResponse<string>

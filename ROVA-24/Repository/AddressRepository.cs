@@ -15,12 +15,12 @@ namespace ROVA_24.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<Customers> GetCustomerByNameAndPhoneNumberAsync(string phoneNumber)
+        public async Task<Customers> getCustomerByNameAndPhoneNumberAsync(string phoneNumber)
         {
             return await _dbContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber);
         }
 
-        public async Task<ServiceResponse<Address>> AddaddressesAsync(Address address)
+        public async Task<ServiceResponse<Address>> addAddressesAsync(Address address)
         {
             _dbContext.Add(address);
             await _dbContext.SaveChangesAsync();
@@ -35,7 +35,7 @@ namespace ROVA_24.Repository
             var isExist = await _dbContext.Customers.AnyAsync(c => c.Name == name && c.PhoneNumber == phoneNumber);
             return isExist;
         }
-        public async Task<List<Address>> GetAllAddressesFromDbAsync()
+        public async Task<List<Address>> getAllAddressesFromDbAsync()
         {
             //return await _dbContext.Address.ToListAsync();
             return await _dbContext.Address.Include(a => a.Customer).ToListAsync();
@@ -81,7 +81,7 @@ namespace ROVA_24.Repository
                 };
             }
         }
-        public async Task<bool> DeleteUserByAddressIdAsync(int addressId)
+        public async Task<bool> deleteAddressByAddressIdAsync(int addressId)
         {
             var address = await _dbContext.Address.FirstOrDefaultAsync(u => u.AddressId == addressId);
             if (address != null)
