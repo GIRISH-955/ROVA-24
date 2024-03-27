@@ -7,5 +7,8 @@ namespace ROVA_24.IRepository
         Task<bool> checkExistingCustomerByIdAsync(int customerId);
         Task<bool> checkExistingProductIdAsync(int productId);
         Task<Reviews> addReviewsAsync(Reviews reviews);
+        Task<List<Reviews>> getAllReviewsAsync();
+        Task<Reviews> getReviewsById(int reviewsId);
+        Task<bool> deleteReviewsByIdAsync(int reciewId);
     }
 }

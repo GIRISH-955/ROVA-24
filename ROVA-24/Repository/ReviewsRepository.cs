@@ -28,5 +28,26 @@ namespace ROVA_24.Repository
             await _dbContext.SaveChangesAsync();
             return reviews;
         }
+        public async Task<List<Reviews>> getAllReviewsAsync()
+        {
+            return await _dbContext.Reviews.ToListAsync();
+        }
+        public async Task<Reviews> getReviewsById(int reviewsId)
+        {
+            Reviews reviews = await _dbContext.Reviews.Where(r => r.reviewId == reviewsId).FirstOrDefaultAsync();
+            return reviews;
+        }
+        public async Task<bool> deleteReviewsByIdAsync(int reciewId)
+        {
+            var reviews = await _dbContext.Reviews.FirstOrDefaultAsync(u => u.reviewId == reciewId);
+            if (reviews != null)
+            {
+                _dbContext.Reviews.Remove(reviews);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false; // User not found
+        }
+
     }
 }
