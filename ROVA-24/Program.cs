@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using ROVA_24.Data;
 using ROVA_24.IRepository;
 using ROVA_24.IServices;
@@ -22,6 +23,8 @@ namespace ROVA_24
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IAddressServices, AddressServices>();
             builder.Services.AddScoped<IAddressRepository,AddressRepository>();
+            builder.Services.AddScoped<IReviewsRepository,ReviewsRepository>();
+            builder.Services.AddScoped<IReviewsServices,ReviewsServices>();
             builder.Services.AddAutoMapper(typeof(ApplicationMapper));
             builder.Services.AddDbContext<Rova_23DBContext>(options =>
             {
@@ -55,7 +58,9 @@ namespace ROVA_24
             app.MapControllers();
 
             app.Run();
+
         }
+
     }
 
 }

@@ -36,7 +36,7 @@ namespace ROVA_24.Services
                         Message = "Product does not exist"
                     };
                 }
-                if (existingProduct && existingCustomer != null)
+                if (existingCustomer != null)
                 {
                     var review = new Reviews
                     {
@@ -46,22 +46,29 @@ namespace ROVA_24.Services
                         Rating = request.Rating,
                     };
                     var result = await _reviewsRepository.addReviewsAsync(review);
-                    var response = new ReviewsResponseDTO
+                    if (result != null)
                     {
-                        reviewId = result.reviewId,
-                        CustomerId = result.CustomerId,
-                        ProductId = result.ProductId,
-                        Comment = result.Comment,
-                        Rating = result.Rating,
-                    };
-                    return new ServiceResponse<ReviewsResponseDTO>
-                    {
-                        Data = response,
-                        Message = "Reviews added successfully"
-                    };
+                        var response = new ReviewsResponseDTO
+                        {
+                            reviewId = result.reviewId,
+                            CustomerId = result.CustomerId,
+                            ProductId = result.ProductId,
+                            Comment = result.Comment,
+                            Rating = result.Rating,
+                        };
+                        return new ServiceResponse<ReviewsResponseDTO>
+                        {
+                            Success = true,
+                            Data = response,
+                            Status= System.Net.HttpStatusCode.OK,
+                            Message = "Reviews added successfully"
+                        };
+                    }
                 }
                 return new ServiceResponse<ReviewsResponseDTO>
                 {
+                    Success=false,
+                    Status= System.Net.HttpStatusCode.BadRequest,
                     Message = "Error occured while adding reviews"
                 };
             }

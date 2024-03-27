@@ -15,11 +15,16 @@ namespace ROVA_24.Controllers
         {
             _reviewsServices = reviewsServices;
         }
-        //[EnableCors("CORSPolicy")]
-        //[HttpPost("addreviews")]
-        //public async Task<IActionResult> addReviewsAsync(ReviewsRequestDTO reviewRequestDTO)
-        //{
-        //    var Result = _reviewsServices.AddReviewsAsync(reviewRequestDTO);
-        //}
+        [EnableCors("CORSPolicy")]
+        [HttpPost("addreviews")]
+        public async Task<IActionResult> addReviewsAsync(ReviewsRequestDTO reviewRequestDTO)
+        {
+            var Result = await _reviewsServices.AddReviewsAsync(reviewRequestDTO);
+            if(Result.Success)
+                return Ok(Result);
+            if(Result.Success && Result.Message== "Error occured while adding reviews")
+                return BadRequest(Result);
+            return BadRequest(Result);
+        }
     }
 }
