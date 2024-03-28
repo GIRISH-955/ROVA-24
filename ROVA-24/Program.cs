@@ -44,6 +44,7 @@ namespace ROVA_24
             });
             var app = builder.Build();
             app.UseCors("CORSPolicy");
+            app.Run("http://localhost:6000");
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
