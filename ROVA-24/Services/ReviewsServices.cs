@@ -124,11 +124,11 @@ namespace ROVA_24.Services
                 {
                     var reviewsdto = new ReviewsResponseDTO
                     {
-                       reviewId=response.reviewId,
-                       CustomerId = response.CustomerId,
-                       ProductId = response.ProductId,
-                       Comment = response.Comment,
-                       Rating = response.Rating
+                        reviewId = response.reviewId,
+                        CustomerId = response.CustomerId,
+                        ProductId = response.ProductId,
+                        Comment = response.Comment,
+                        Rating = response.Rating
                     };
                     return new ServiceResponse<ReviewsResponseDTO>
                     {
@@ -155,6 +155,57 @@ namespace ROVA_24.Services
                 };
             }
         }
+        public async Task<ServiceResponse<ReviewsRequestDTO>> updateReviewsByIdAsync(int reviewId, ReviewsRequestDTO reviewsRequestDTO)
+        {
+            var existingReviews = await _reviewsRepository.getReviewsById(reviewId);
+            if (existingReviews == null)
+            {
+                return new ServiceResponse<ReviewsRequestDTO>
+                {
+                    Status = System.Net.HttpStatusCode.BadRequest,
+                    Message = "Reviews does not exist"
+                };
+            }
+
+            var existingCustomer = await _reviewsRepository.checkExistingCustomerByIdAsync(reviewsRequestDTO.CustomerId);
+            if (existingCustomer == null)
+            {
+                return new ServiceResponse<ReviewsRequestDTO>
+                {
+                    Status = System.Net.HttpStatusCode.BadRequest,
+                    Message = "Customer does not exist"
+                };
+            }
+            var existingProduct = await _reviewsRepository.checkExistingProductIdAsync(reviewsRequestDTO.ProductId);
+            if (existingProduct == null)
+            {
+                return new ServiceResponse<ReviewsRequestDTO>
+                {
+                    Status = System.Net.HttpStatusCode.BadRequest,
+                    Message = "Product Does not exist"
+                };
+            }
+            existingReviews.Comment = reviewsRequestDTO.Comment;
+            existingReviews.Rating = reviewsRequestDTO.Rating;
+
+            var result = await _reviewsRepository.updateCustomerReviewsAsync(existingReviews);
+            if (result.Success)
+            {
+                return new ServiceResponse<ReviewsRequestDTO>
+                {
+                    Success = true,
+                    Data = reviewsRequestDTO,
+                    Status = System.Net.HttpStatusCode.OK,
+                    Message = " Updated successfully"
+                };
+            }
+            return new ServiceResponse<ReviewsRequestDTO>
+            {
+                Success = true,
+                Status = System.Net.HttpStatusCode.BadRequest,
+                Message = "Error occured while updating"
+            };
+        }
         public async Task<ServiceResponse<string>> deleteReviewsByIdAsync(int reviewId)
         {
             var existingReviews = await _reviewsRepository.getReviewsById(reviewId);
@@ -179,5 +230,5 @@ namespace ROVA_24.Services
             };
         }
     }
-    
+
 }

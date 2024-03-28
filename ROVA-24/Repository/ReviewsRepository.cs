@@ -2,6 +2,7 @@
 using ROVA_24.Data;
 using ROVA_24.IRepository;
 using ROVA_24.Models;
+using ROVA_24.ServiceResponse;
 
 namespace ROVA_24.Repository
 {
@@ -36,6 +37,30 @@ namespace ROVA_24.Repository
         {
             Reviews reviews = await _dbContext.Reviews.Where(r => r.reviewId == reviewsId).FirstOrDefaultAsync();
             return reviews;
+        }
+        public async Task<ServiceResponse<Reviews>> updateCustomerReviewsAsync(Reviews reviews)
+        {
+            try
+            {
+                // Update the user in the database
+                _dbContext.Reviews.Update(reviews);
+                await _dbContext.SaveChangesAsync();
+
+                return new ServiceResponse<Reviews>
+                {
+                    Success = true,
+                    Data = reviews,
+                };
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and return a failure response
+                return new ServiceResponse<Reviews>
+                {
+                    Success = false,
+                    Message = ex.Message
+                };
+            }
         }
         public async Task<bool> deleteReviewsByIdAsync(int reciewId)
         {
