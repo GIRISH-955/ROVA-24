@@ -21,7 +21,7 @@ namespace ROVA_24.Controllers
             _customerService = customerService;
         }
 
-        [HttpPost("Customers")]
+        [HttpPost("Add Customers")]
         public async Task<ActionResult<Customer>> AddCustomer([FromBody] CustomerDTO customerDto)
         {
             if (!ModelState.IsValid)
