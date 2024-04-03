@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ROVA_24.Data;
 using ROVA_24.IRepository;
@@ -21,6 +22,8 @@ namespace ROVA_24
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
             builder.Services.AddScoped<IAddressServices, AddressServices>();
             builder.Services.AddScoped<IAddressRepository,AddressRepository>();
             builder.Services.AddScoped<IReviewsRepository,ReviewsRepository>();
@@ -63,6 +66,4 @@ namespace ROVA_24
         }
 
     }
-
-}
 
