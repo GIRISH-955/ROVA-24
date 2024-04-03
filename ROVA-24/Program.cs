@@ -1,43 +1,69 @@
+
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ROVA_24.Data;
 using ROVA_24.IRepository;
-using ROVA_24.IService;
+using ROVA_24.IServices;
+using ROVA_24.Mapper;
 using ROVA_24.Repository;
-using ROVA_24.Service;
+using ROVA_24.Services;
 
-public class Program
+namespace ROVA_24
 {
-    public static void Main(string[] args)
+    public class Program
     {
-        var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-
-        builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddScoped<ICustomerService, CustomerService>();
-        builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-        builder.Services.AddDbContext<ROVADBContext>(options =>
+        public static void Main(string[] args)
         {
-            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-            options.EnableSensitiveDataLogging();
-        });
+            var builder = WebApplication.CreateBuilder(args);
 
-        var app = builder.Build();
+            // Add services to the container.
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
+            builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+            builder.Services.AddScoped<IAddressServices, AddressServices>();
+            builder.Services.AddScoped<IAddressRepository,AddressRepository>();
+            builder.Services.AddScoped<IReviewsRepository,ReviewsRepository>();
+            builder.Services.AddScoped<IReviewsServices,ReviewsServices>();
+            builder.Services.AddAutoMapper(typeof(ApplicationMapper));
+            builder.Services.AddDbContext<Rova_23DBContext>(options =>
+            {
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.EnableSensitiveDataLogging();
+            });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CORSPolicy",
+                    builder => builder
+                        .WithOrigins("http://localhost:5243/swagger/index.html")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                        .SetIsOriginAllowed((hosts) => true));
+
+            });
+            var app = builder.Build();
+            app.UseCors("CORSPolicy");
+            app.Run("http://localhost:6000");
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
             app.UseSwagger();
             app.UseSwaggerUI();
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.Run();
+
         }
 
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        app.Run();
     }
-}
+
